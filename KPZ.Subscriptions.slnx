@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="KPZ.Subscriptions.BusinessLogic/KPZ.Subscriptions.BusinessLogic.csproj" />
+  <Project Path="KPZ.Subscriptions.DataAccess/KPZ.Subscriptions.DataAccess.csproj" />
+  <Project Path="KPZ.Subscriptions.Demo/KPZ.Subscriptions.Demo.csproj" Id="a5a07daa-003f-4f1e-b26b-c27427697b93" />
+  <Project Path="KPZ.Subscriptions.Domain/KPZ.Subscriptions.Domain.csproj" />
+  <Project Path="KPZ.Subscriptions.WebAPI/KPZ.Subscriptions.WebAPI.csproj" />
+</Solution>
