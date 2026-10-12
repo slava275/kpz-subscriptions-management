@@ -37,7 +37,10 @@ public sealed class SubscriptionConfiguration : IEntityTypeConfiguration<Subscri
         entity.Property(x => x.Status)
               .HasConversion<string>()
               .HasMaxLength(20)
-              .HasDefaultValue(SubscriptionStatus.Active);
+              .HasDefaultValue(SubscriptionStatus.Active); 
+        
+        entity.Property(x => x.CreatedAt)
+            .HasDefaultValueSql("SYSUTCDATETIME()");
 
         entity.Property(x => x.RemindBeforeDays)
               .HasDefaultValue(3);

@@ -13,6 +13,7 @@ public sealed class SubscriptionsDbContext(DbContextOptions<SubscriptionsDbConte
     public DbSet<Charge> Charges => Set<Charge>();
     public DbSet<Tag> Tags => Set<Tag>();
     public DbSet<SubscriptionTag> SubscriptionTags => Set<SubscriptionTag>();
+    public DbSet<ExternalLogin> ExternalLogins => Set<ExternalLogin>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         => modelBuilder.ApplyConfigurationsFromAssembly(typeof(SubscriptionsDbContext).Assembly);

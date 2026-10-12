@@ -12,7 +12,7 @@ public static class SeedData
         var now = DateTime.UtcNow;
 
         // ---------- Користувачі ----------
-        var olena = new User { Name = "Олена Коваль", Email = "olena.koval@example.com", CreatedAt = now };
+        var olena = new User { Name = "Олена Коваль", Email = "olena.koval@example.com", CreatedAt = now, Role = UserRole.Admin };
         var taras = new User { Name = "Тарас Мельник", Email = "taras.melnyk@example.com", CreatedAt = now };
         var maria = new User { Name = "Марія Шевчук", Email = "maria.shevchuk@example.com", CreatedAt = now };
 

@@ -15,6 +15,9 @@ public sealed class Subscription
     public DateOnly? EndDate { get; set; }
     public int RemindBeforeDays { get; set; }
     public SubscriptionStatus Status { get; set; }
+    public DateOnly? TrialEndsAt { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public int UserId { get; set; }
     public User User { get; set; } = null!;
