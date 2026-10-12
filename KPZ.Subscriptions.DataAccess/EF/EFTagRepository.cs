@@ -26,7 +26,8 @@ public sealed class EFTagRepository(SubscriptionsDbContext db) : ITagRepository
             await db.SaveChangesAsync(ct); 
         }
         catch (DbUpdateException ex) when (SqlErrors.IsUnique(ex))
-        { 
+        {
+            db.Entry(tag).State = EntityState.Detached;
             throw new DuplicateException($"Тег «{tag.Name}» уже існує.", ex); 
         }
         return tag.Id;
@@ -37,19 +38,22 @@ public sealed class EFTagRepository(SubscriptionsDbContext db) : ITagRepository
 
     public async Task AttachAsync(int subscriptionId, int tagId, string? note, CancellationToken ct)
     {
-        db.SubscriptionTags.Add(new SubscriptionTag
+        var link = new SubscriptionTag
         {
             SubscriptionId = subscriptionId,
             TagId = tagId,
             Note = note,
             AddedAt = DateTime.UtcNow
-        });
+        };
+
+        db.SubscriptionTags.Add(link);
         try 
         { 
             await db.SaveChangesAsync(ct); 
         }
         catch (DbUpdateException ex) when (SqlErrors.IsUnique(ex))
-        { 
+        {
+            db.Entry(link).State = EntityState.Detached;
             throw new DuplicateException("Тег уже прикріплено до цієї підписки.", ex); 
         }
     }

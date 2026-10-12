@@ -29,7 +29,8 @@ public sealed class EFUserRepository(SubscriptionsDbContext db) : IUserRepositor
             await db.SaveChangesAsync(ct); 
         }
         catch (DbUpdateException ex) when (SqlErrors.IsUnique(ex))
-        { 
+        {
+            db.Entry(user).State = EntityState.Detached;
             throw new DuplicateException($"Email {user.Email} уже зайнятий.", ex); 
         }
         return user.Id;

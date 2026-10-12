@@ -23,7 +23,8 @@ public sealed class EFCategoryRepository(SubscriptionsDbContext db) : ICategoryR
             await db.SaveChangesAsync(ct); 
         }
         catch (DbUpdateException ex) when (SqlErrors.IsUnique(ex))
-        { 
+        {
+            db.Entry(category).State = EntityState.Detached;
             throw new DuplicateException($"Категорія «{category.Name}» уже існує.", ex); 
         }
         return category.Id;
