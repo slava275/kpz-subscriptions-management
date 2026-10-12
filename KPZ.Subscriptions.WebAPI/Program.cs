@@ -1,10 +1,15 @@
+using FluentValidation;
 using Kpz.Subscriptions.Data.Ado;
 using Kpz.Subscriptions.DataAccess.EF;
+using KPZ.Subscriptions.BusinessLogic.Services;
+using KPZ.Subscriptions.BusinessLogic.Services.Interfaces;
 using KPZ.Subscriptions.DataAccess;
 using KPZ.Subscriptions.DataAccess.Seeding;
 using KPZ.Subscriptions.Domain.Abstractions;
 using KPZ.Subscriptions.Domain.Entities;
+using KPZ.Subscriptions.WebAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace KPZ.Subscriptions.WebAPI;
 
@@ -63,7 +68,24 @@ public class Program
         builder.Services.AddKeyedScoped<ICategoryRepository, EFCategoryRepository>("ef");
         builder.Services.AddKeyedScoped<IBillingRepository, EFBillingRepository>("ef");
 
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+        builder.Services.AddScoped<ICategoryService, CategoryService>();
+        builder.Services.AddScoped<ITagService, TagService>();
+        builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+        builder.Services.AddScoped<IChargeService, ChargeService>();
+
+        builder.Services.AddValidatorsFromAssemblyContaining<UserService>(ServiceLifetime.Singleton);
+
+        builder.Services.AddControllers()
+            .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+        builder.Services.AddProblemDetails();
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
         var app = builder.Build();
+
+        app.UseExceptionHandler();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

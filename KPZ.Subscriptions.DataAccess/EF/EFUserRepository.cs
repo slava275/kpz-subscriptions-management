@@ -21,6 +21,24 @@ public sealed class EFUserRepository(SubscriptionsDbContext db) : IUserRepositor
     public async Task<IReadOnlyList<User>> GetAllAsync(CancellationToken ct)
         => await db.Users.AsNoTracking().OrderBy(u => u.Name).ToListAsync(ct);
 
+    public Task<User?> GetByExternalLoginAsync(string provider, string subject, CancellationToken ct)
+    => db.ExternalLogins.AsNoTracking()
+        .Where(l => l.Provider == provider && l.ProviderSubject == subject)
+        .Select(l => l.User)
+        .SingleOrDefaultAsync(ct);
+
+    public async Task AddExternalLoginAsync(int userId, ExternalLogin login, CancellationToken ct)
+    {
+        login.UserId = userId;
+        db.ExternalLogins.Add(login);
+        try { await db.SaveChangesAsync(ct); }
+        catch (DbUpdateException ex) when (SqlErrors.IsUnique(ex))
+        {
+            db.Entry(login).State = EntityState.Detached;
+            throw new DuplicateException("Цей зовнішній акаунт уже прив'язано.", ex);
+        }
+    }
+
     public async Task<int> AddAsync(User user, CancellationToken ct)
     {
         db.Users.Add(user);

@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\KPZ.Subscriptions.BusinessLogic\KPZ.Subscriptions.BusinessLogic.csproj" />
   </ItemGroup>
 
