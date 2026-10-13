@@ -33,6 +33,8 @@ public sealed class GlobalExceptionHandler(
                     exception.Message + " Отримайте актуальну версію й повторіть запит."); break;
             case BusinessRuleException:
                 problem = Make(StatusCodes.Status422UnprocessableEntity, "Порушено бізнес-правило", exception.Message); break;
+            case ForbiddenException:
+                problem = Make(StatusCodes.Status403Forbidden, "Доступ заборонено", exception.Message); break;
             case OperationCanceledException:
                 return false;
             default:

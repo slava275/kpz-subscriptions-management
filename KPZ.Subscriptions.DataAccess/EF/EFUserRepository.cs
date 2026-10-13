@@ -39,6 +39,13 @@ public sealed class EFUserRepository(SubscriptionsDbContext db) : IUserRepositor
         }
     }
 
+    public async Task RecordLoginAsync(int userId, DateTime atUtc, string? avatarUrl, CancellationToken ct)
+        => await db.Users.Where(u => u.Id == userId).ExecuteUpdateAsync(s =>
+        {
+            s.SetProperty(u => u.LastLoginAt, atUtc);
+            if (avatarUrl is not null) s.SetProperty(u => u.AvatarUrl, avatarUrl);
+        }, ct);
+
     public async Task<int> AddAsync(User user, CancellationToken ct)
     {
         db.Users.Add(user);

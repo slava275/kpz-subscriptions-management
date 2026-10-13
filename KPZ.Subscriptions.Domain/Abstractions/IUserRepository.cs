@@ -10,6 +10,7 @@ public interface IUserRepository
     Task<IReadOnlyList<User>> GetAllAsync(CancellationToken ct);
     Task<User?> GetByExternalLoginAsync(string provider, string subject, CancellationToken ct);
     Task AddExternalLoginAsync(int userId, ExternalLogin login, CancellationToken ct);
+    Task RecordLoginAsync(int userId, DateTime atUtc, string? avatarUrl, CancellationToken ct);
     Task<int> AddAsync(User user, CancellationToken ct);
     Task<bool> UpdateAsync(User user, CancellationToken ct);
     Task<bool> DeleteAsync(int id, CancellationToken ct);
